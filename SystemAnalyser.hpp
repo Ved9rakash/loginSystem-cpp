@@ -7,7 +7,7 @@ class SystemAnalyser
 {
 public:
     SystemAnalyser();
-    virtual void runCommand(const char *command);
+    virtual std::string runCommand(const char *command);
     virtual void storeOutput(std::string& result);
     virtual void displayOutput();
     virtual ~SystemAnalyser();
