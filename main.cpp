@@ -10,7 +10,7 @@
 
 void sleep()
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 }
 
 int main()
@@ -18,6 +18,7 @@ int main()
     auto system = std::make_unique<SystemAnalyser>();
     system->runCommand("clear");
     int num{};
+    std::cout << typeid(system).name() << '\n';
     std::cout << "Welcome to my c++ website.\n\n";
     
     sleep();

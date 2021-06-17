@@ -3,7 +3,18 @@
 
 #include <string>
 
-class Login;
+
+class Login
+{
+private:
+    std::string m_userName{};
+    std::string m_userPassword{};
+
+public:
+    Login() = default;
+
+    bool isPresent();
+};
 
 class Register
 {
@@ -27,16 +38,6 @@ public:
     virtual ~Register();
 };
 
-class Login
-{
-private:
-    std::string m_userName{};
-    std::string m_userPassword{};
 
-public:
-    Login() = default;
-
-    bool isPresent();
-};
 
 #endif
