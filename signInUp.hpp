@@ -13,6 +13,10 @@ private:
 public:
     Login() = default;
 
+    Login(std::string name, std::string password)
+        : m_userName{name}, m_userPassword{password}
+    {
+    }
     bool isPresent();
 };
 
@@ -28,12 +32,12 @@ public:
     
     Register(std::string name, std::string password)
         : m_userName{name}, m_userPassword{password}
-        {
-        }
+    {
+    }
     
     friend bool Login::isPresent();
 
-    void createAccount() { }
+    void createAccount();
 
     virtual ~Register();
 };
