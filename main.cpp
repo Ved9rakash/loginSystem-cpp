@@ -1,126 +1,103 @@
 #include "signInUp.hpp"
 #include "SystemAnalyser.hpp"
-
 #include <iostream>
 #include <string>
 #include <memory>
 #include <typeinfo>
 #include <chrono>
 #include <thread>
+#include <stdlib.h>
+#include <fstream>
 
 void sleep(int milliseconds)
 {
+    //sleeping the program to make it more realistic
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
+
 void commandClear()
 {
+    //Using linux command to make screen clear(Like new window is popping up)
     auto system = std::make_unique<SystemAnalyser>();
     system->runCommand("clear");
 }
 
-bool loginSystem();
-bool registerSystem();
+int getChoice()
+{
+    std::cout << "Welcome to my c++ Login/Register page\n\n";
+    std::cout << "Press: \n1 -> Login\n2 -> Register\n3 -> Exit.\n";
+    int choice{0};
+    std::cin >> choice;
+    return  choice;
+}
 
 int main()
 {
-    commandClear();
-
-    int loginAccess{0};
-    int registerAccess{0};
-    
-    do 
-    {
-        int num{};
-        //std::cout << typeid(system).name() << '\n';
-        std::cout << "Welcome to my c++ website.\n\n";
-        std::cout << "Press\n1 -> Login.\n2 -> Register\n";
-
-        std::cin >> num;
-        sleep(1000);
-
-        switch(num)
-        {
-            case 1:
-                loginAccess = loginSystem();
-                if (loginAccess == 1)
-                    registerAccess = 1;
-                break;
-
-            case 2:
-                registerAccess = registerSystem();
-                if (registerAccess == 1)
-                    loginAccess = 1;
-                break;
-
-            default:
-                break;
-        }
-    }while((loginAccess == 0) && (registerAccess == 0));
-
-
-    return 0;
-}
-
-bool loginSystem()
-{
-    commandClear();
     std::string username{};
-    std::string userpassword{};
-    
-    bool access{0};
-    do
-    {
-        std::cout << "Pls Enter the following: \n\n";
-        std::cout << "Username: \n";
-        std::getline(std::cin >> std::ws, username);
-        std::cout << "Password: \n";
-        std::getline(std::cin >> std::ws, userpassword);
+    std::string password{};
 
-        Login user{username, userpassword};
-        if (user.isPresent())
-        {
-            return 1; //Give the access to login.
-        }
-        else
-        {
-            std::cout << "Sorry, But this username already exists. Try another.";
-            sleep(2000);
-            commandClear();
-            
-        }
-    }while(true);
-    
-    return 0;
-}
-
-bool registerSystem()
-{
     commandClear();
-    std::string username{};
-    std::string userpassword{};
-    
-    bool access{0};
-    do
+    bool loginid = false;
+    switch (getChoice())
     {
-        std::cout << "Pls Enter the following: \n\n";
-        std::cout << "Username: \n";
-        std::getline(std::cin >> std::ws, username);
-        std::cout << "Password: \n";
-        std::getline(std::cin >> std::ws, userpassword);
-
-        Login user{username, userpassword};
-        if (user.isPresent())
-        {
-            sleep(2000);
-            std::cout << "Sorry, But this username already exists. Try another.";
-            commandClear();
-        }
-        else
-        {
-            return 1;; //Give the access to login.
+        case 1:
+            while (!loginid)
+            {
+                std::cout << "Login\n\n";
+                std::cout << "Username\n"; std::getline(std::cin >> std::ws, username);
+                std::cout << "Password\n"; std::getline(std::cin >> std::ws, password);
+                if (LoginInUp::isPresent(username, password))
+                {
+                    loginid = true;
+                }
+                else
+                {
+                    std::cout << "Entered wrong credentials";
+                    sleep(1000);
+                    commandClear();
+                }
+            }
             break;
-        }
-    }while(true);
+        
+        case 2:
+            while(!loginid)
+            {
+                std::cout << "Register\n\n";
+                std::cout << "Username\n"; std::getline(std::cin >> std::ws, username);
+                std::cout << "Password\n"; std::getline(std::cin >> std::ws, password);
+                if (!LoginInUp::isPresent(username, password))
+                {
+                    loginid = true;
+                }
+                else
+                {
+                    std::cout << "Username already exists, try different name.";
+                    sleep(1000);
+                    commandClear();
+                }
+            }
+            
+
+
+            break;
+
+        case 3:
+            std::cout << "Exiting the window.";
+            commandClear();
+            std::exit(0);
+            break;
+        
+        default:
+            std::cerr << "Random Value/Charater entered. Exiting.";
+            sleep(2000);
+            std::exit(1);
+    }
+
+    LoginInUp login{username, password};
+    std::cout << "Welcome.\n\n";
+    std::cout << "Mobile Number - " << login.mobileNumber();
+    std::cout << "Age           - " << login.age();
+
     return 0;
 }

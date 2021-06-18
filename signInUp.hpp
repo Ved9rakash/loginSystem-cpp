@@ -1,47 +1,34 @@
-#ifndef REGISTER_HPP
-#define REGISTER_HPP
+#ifndef SIGNINUP_HPP
+#define SIGNINUP_HPP
 
+#include <iostream>
 #include <string>
 
+struct Data
+{
+    int id;
+    int number;
+};
 
-class Login
+class LoginInUp
 {
 private:
     std::string m_userName{};
     std::string m_userPassword{};
+    int m_number{};
+    int m_age{};
 
 public:
-    Login() = default;
+    LoginInUp(std::string name, std::string password);
 
-    Login(std::string name, std::string password)
-        : m_userName{name}, m_userPassword{password}
-    {
-    }
-    bool isPresent();
+    static bool isPresent(std::string name, std::string password);
+
+    // static bool isPresent(std::string name);
+
+    static void add(std::string name, std::string password);
+
+    int age();
+
+    int mobileNumber();
 };
-
-class Register
-{
-private:
-    std::string m_userName{};
-    std::string m_userPassword{};
-    int finalCheck{0};
-
-public:
-    Register() = default;
-    
-    Register(std::string name, std::string password)
-        : m_userName{name}, m_userPassword{password}
-    {
-    }
-    
-    friend bool Login::isPresent();
-
-    void createAccount();
-
-    virtual ~Register();
-};
-
-
-
 #endif
