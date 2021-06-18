@@ -34,8 +34,12 @@ int getChoice()
 
 int main()
 {
+
     std::string username{};
     std::string password{};
+    std::string number{};
+    int age{};
+    std::string gender{};
 
     commandClear();
     bool loginid = false;
@@ -50,6 +54,7 @@ int main()
                 if (LoginInUp::isPresent(username, password))
                 {
                     loginid = true;
+                    std::cout << "TRUE";
                 }
                 else
                 {
@@ -66,20 +71,23 @@ int main()
                 std::cout << "Register\n\n";
                 std::cout << "Username\n"; std::getline(std::cin >> std::ws, username);
                 std::cout << "Password\n"; std::getline(std::cin >> std::ws, password);
-                if (!LoginInUp::isPresent(username, password))
-                {
-                    loginid = true;
-                }
-                else
+                if (LoginInUp::isPresent(username, password))
                 {
                     std::cout << "Username already exists, try different name.";
                     sleep(1000);
                     commandClear();
                 }
+                else
+                {
+                    //Add it in file
+                    std::cout << "Enter Mobile number: ";   std::getline(std::cin >> std::ws, number);
+                    std::cout << "Enter age: ";             std::cin >> age;
+                    std::cout << "Enter gender: ";          std::getline(std::cin >> std::ws, gender);
+
+                    LoginInUp::add(username, password, number, age, gender);
+                    loginid = true;
+                }
             }
-            
-
-
             break;
 
         case 3:
@@ -95,6 +103,7 @@ int main()
     }
 
     LoginInUp login{username, password};
+    commandClear();
     std::cout << "Welcome.\n\n";
     std::cout << "Mobile Number - " << login.mobileNumber();
     std::cout << "Age           - " << login.age();

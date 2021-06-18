@@ -12,85 +12,105 @@ LoginInUp::LoginInUp(std::string name, std::string password)
     m_userName = name;
     m_userPassword = password;
 
-    std::fstream fin;
-    fin.open("loginCredentials.csv", std::ios::in);
+    std::ifstream fin{ "loginCredentials.csv" };
 
-    int rollnum, roll2, count = 0;
-    std::cout << "Enter the roll number "
-         << "of the student to display details: ";
-    std::cin >> rollnum;
-  
-    // Read the Data from the file
-    // as String Vector
     std::vector<std::string> row;
-    std::string line, word, temp;
+    std::string line{};
+    std::string word{};
   
-    while (fin >> temp) {
-  
+    if (!fin)
+    {
+        std::cout << " FILE CAN'T BE OPENED";
+    }
+ 
+    while (fin)
+    {
         row.clear();
   
-        // read an entire row and
-        // store it in a string variable 'line'
         std::getline(fin, line);
   
-        // used for breaking words
-        std::stringstream s(line);
+        std::stringstream s{line};
   
-        // read every column data of a row and
-        // store it in a string variable, 'word'
-        while (std::getline(s, word, ', ')) {
-  
-            // add all the column data
-            // of a row to a vector
+        while (std::getline(s, word, ','))
+        {  
             row.push_back(word);
         }
-  
-        // convert string to integer for comparision
-        roll2 = stoi(row[0]);
-  
-        // Compare the roll number
-        if (roll2 == rollnum) {
-  
-            // Print the found data
-            count = 1;
-            std::cout << "Details of Roll " << row[0] << " : \n";
-            std::cout << "Name: " << row[1] << "\n";
-            std::cout << "Maths: " << row[2] << "\n";
-            std::cout << "Physics: " << row[3] << "\n";
-            std::cout << "Chemistry: " << row[4] << "\n";
-            std::cout << "Biology: " << row[5] << "\n";
-            break;
+
+        if (name == row[0])
+        {
+            m_number = row[2];
+            m_age = std::stoi(row[3]);
         }
     }
-    if (count == 0)
-        std::cout << "Record not found\n";
 }
 //Checking is the username is already present or not
 bool LoginInUp::isPresent(std::string name, std::string password)
 {
+    std::ifstream fin{ "loginCredentials.csv" };
 
+    std::vector<std::string> row;
+    std::string line{};
+    std::string word{};
+  
+    if (!fin)
+    {
+        std::cout << " FILE CAN'T BE OPENED";
+    }
+ 
+    while (fin)
+    {
+        row.clear();
+  
+        std::getline(fin, line);
+  
+        std::stringstream s{line};
+  
+        while (std::getline(s, word, ','))
+        {  
+            row.push_back(word);
+        }
+
+        if (name == row[0])
+        {
+            return 1;
+        }
+    }
+    return 0;
 }
 
-// //Checking if the username is present or not
-// bool LoginInUp::isPresent(std::string name)
-// {
-
-// }
 
 //Adding new credentials in logincredentails.csv file
-void LoginInUp::add(std::string name, std::string password)
-{
+void LoginInUp::add(
+        std::string name, 
+        std::string password, 
+        std::string number, 
+        int age, 
+        std::string gender
+    )
+    {
+    std::ofstream outf{ "loginCredentials.csv"};
 
+    if (!outf)
+    {
+        std::cout << "FILE CAN'T BE OPENED";
+    }
+
+    outf
+        << name << ','
+        << password << ','
+        << number << ','
+        << age << ','
+        << gender;
 }
 
 //Getting age
 int LoginInUp::age()
 {
-
+    return m_age;
 }
 
 //Getting Mobile Number
-int LoginInUp::mobileNumber()
+std::string LoginInUp::mobileNumber()
 {
-
+    return m_number;
 }

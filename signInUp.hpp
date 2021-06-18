@@ -4,18 +4,12 @@
 #include <iostream>
 #include <string>
 
-struct Data
-{
-    int id;
-    int number;
-};
-
 class LoginInUp
 {
 private:
     std::string m_userName{};
     std::string m_userPassword{};
-    int m_number{};
+    std::string m_number{};
     int m_age{};
 
 public:
@@ -23,12 +17,17 @@ public:
 
     static bool isPresent(std::string name, std::string password);
 
-    // static bool isPresent(std::string name);
-
-    static void add(std::string name, std::string password);
+    static void add(
+        std::string name, 
+        std::string password, 
+        std::string number, 
+        int age, 
+        std::string gender
+    );
 
     int age();
 
-    int mobileNumber();
+    std::string mobileNumber();
 };
+
 #endif
