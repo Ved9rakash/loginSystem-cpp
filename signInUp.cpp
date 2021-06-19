@@ -44,7 +44,7 @@ LoginInUp::LoginInUp(std::string name, std::string password)
     }
 }
 //Checking is the username is already present or not
-bool LoginInUp::isPresent(std::string name, std::string password)
+bool LoginInUp::isPresent(std::string name)
 {
     std::ifstream fin{ "loginCredentials.csv" };
 
@@ -78,6 +78,39 @@ bool LoginInUp::isPresent(std::string name, std::string password)
     return 0;
 }
 
+bool LoginInUp::passwordCheck(std::string password)
+{
+    std::ifstream fin{ "loginCredentials.csv" };
+
+    std::vector<std::string> row;
+    std::string line{};
+    std::string word{};
+  
+    if (!fin)
+    {
+        std::cout << " FILE CAN'T BE OPENED";
+    }
+ 
+    while (fin)
+    {
+        row.clear();
+  
+        std::getline(fin, line);
+  
+        std::stringstream s{line};
+  
+        while (std::getline(s, word, ','))
+        {  
+            row.push_back(word);
+        }
+
+        if (password == row[1])
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 //Adding new credentials in logincredentails.csv file
 void LoginInUp::add(

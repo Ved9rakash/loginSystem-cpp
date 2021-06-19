@@ -15,7 +15,9 @@ private:
 public:
     LoginInUp(std::string name, std::string password);
 
-    static bool isPresent(std::string name, std::string password);
+    static bool isPresent(std::string name);
+
+    static bool passwordCheck(std::string password);
 
     static void add(
         std::string name, 
