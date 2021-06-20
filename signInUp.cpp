@@ -121,7 +121,7 @@ void LoginInUp::add(
         std::string gender
     )
     {
-    std::ofstream outf{ "loginCredentials.csv"};
+    std::ofstream outf{ "loginCredentials.csv", std::ios_base::app};
 
     if (!outf)
     {
@@ -129,11 +129,12 @@ void LoginInUp::add(
     }
 
     outf
+        << '\n'
         << name << ','
         << password << ','
         << number << ','
         << age << ','
-        << gender;
+        << gender ;
 }
 
 //Getting age
