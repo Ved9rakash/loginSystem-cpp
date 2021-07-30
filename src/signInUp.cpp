@@ -6,6 +6,12 @@
 #include <string>
 #include <vector>
 
+void sleep(int milliseconds)
+{
+    //sleeping the program for x milliseconds to make it more realistic
+    std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+}
+
 //Constructor
 LoginInUp::LoginInUp(std::string name, std::string password)
 {
@@ -90,7 +96,6 @@ bool LoginInUp::passwordCheck(std::string password)
     {
         std::cout << " FILE CAN'T BE OPENED";
     }
- 
     while (fin)
     {
         row.clear();
@@ -106,6 +111,7 @@ bool LoginInUp::passwordCheck(std::string password)
 
         if (password == row[1])
         {
+            std::cout << "Is this printing?";
             return 1;
         }
     }

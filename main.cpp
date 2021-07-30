@@ -2,7 +2,7 @@
     Version - 1.0.1
 
     Login Program : 
-    A unix based cpp login program, which checks 
+    A cpp login program, which checks 
     the user data in "loginCredentials.csv" file.
     Currently 2 basic operation-
     1 - Login
@@ -21,14 +21,6 @@
 #include <chrono>
 #include <thread>
 #include <stdlib.h>
-
-
-
-void sleep(int milliseconds)
-{
-    //sleeping the program for x milliseconds to make it more realistic
-    std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
-}
 
 
 void commandClear()
@@ -61,24 +53,31 @@ int main()
     std::string gender{};
 
     //Checking if credentials are present or not.
-    bool loginid = false;
+    bool loginid = true;
 
     switch (getChoice())
     {
         case 1:
         //Login Case
-            while (!loginid)
+            while (loginid)
             {
-                std::cout << "Login\n\n";
+                commandClear();
+                std::cout << "Login\nEnter 'quit' to exit.\n\n";
                 std::cout << "Username\n"; std::getline(std::cin >> std::ws, username);
+                if (username == "quit")
+                    std::exit(0);
                 std::cout << "Password\n"; std::getline(std::cin >> std::ws, password);
-
                 //Checking if username is present in database
-                if (LoginInUp::isPresent(username))
+                if (LoginInUp::isPresent(username) && LoginInUp::passwordCheck(password))
                 {
+                    std::cout << "XXXXXXthis printing?";
                     //If YES, then check the password if it matches.
                     if (LoginInUp::passwordCheck(password))
-                        loginid = true;
+                    {   
+                        std::cout << "is this printing?\n";
+                        loginid = false;
+                        break;
+                    }
                     else
                         std::cout << "Wrong Password.";
                 }
@@ -93,17 +92,20 @@ int main()
         
         case 2:
         //Register Case
-            while(!loginid)
+            while(loginid)
             {
-                std::cout << "Register\n\n";
+                commandClear();
+                std::cout << "Register\nEnter 'quit' to exit\n\n";
                 std::cout << "Username\n"; std::getline(std::cin >> std::ws, username);
+                if (username == "quit")
+                    std::exit(0);
                 std::cout << "Password\n"; std::getline(std::cin >> std::ws, password);
 
                 //Checking if username is present in database
                 if (LoginInUp::isPresent(username))
                 {
                     //if YES, then try again.
-                    std::cout << "Username already exists, try different name.";
+                    std::cout << "Username already exists, try different name." << std::flush;
                     sleep(1000);
                     commandClear();
                 }
@@ -115,7 +117,8 @@ int main()
                     std::cout << "Enter gender: ";          std::getline(std::cin >> std::ws, gender);
 
                     LoginInUp::add(username, password, number, age, gender);
-                    loginid = true;
+
+                    loginid = false;
                 }
             }
             break;
@@ -133,10 +136,14 @@ int main()
     }
 
     LoginInUp login{username, password};
-    commandClear();
+    //commandClear();
     std::cout << "Welcome.\n\n";
     std::cout << "Mobile Number - " << login.mobileNumber();
     std::cout << "\nAge           - " << login.age() << '\n';
-
+    std::cout << "Enter 'q' to exit.";
+    char choice;
+    std::cin >> choice;
+    if (choice == 'q')
+        std::exit(0);
     return 0;
 }

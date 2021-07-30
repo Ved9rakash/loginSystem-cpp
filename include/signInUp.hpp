@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
+#include <chrono>
+
+void sleep(int milliseconds);
 
 class LoginInUp
 {
